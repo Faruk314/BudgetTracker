@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./components/Header";
+import Card from "./components/Card";
+import { Fragment } from "react";
+import { useSelector } from "react-redux";
+import Total from "./components/Total";
 
 function App() {
+  const budgets = useSelector((state) => state.budget.budgets);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Header />
+      <section className="space-y-5 px-4 py-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-x-3">
+        {budgets.length === 0 && (
+          <p className="text-blue-700">You dont have any budgets</p>
+        )}
+        {budgets.map((budget) => (
+          <Card
+            key={budget.id}
+            name={budget.name}
+            maxSpending={budget.maxSpending}
+            id={budget.id}
+          />
+        ))}
+      </section>
+      {budgets.length > 0 && (
+        <section className="mx-auto px-4 py-5 w-5/6 md:w-3/4 lg:w-1/2 lg:mx-2">
+          <Total />
+        </section>
+      )}
+    </Fragment>
   );
 }
 
